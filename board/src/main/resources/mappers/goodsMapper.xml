@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mappers.goods">
+
+	<!-- write post -->
+	<insert id="write" parameterType="com.board.domain.GoodsVO">
+		insert into tbl_goods(gdsState,
+		cateCode, gdsDes,
+		gdsWriter, gdsPrice, gdsPwd, gdsImg, gdsThumbImg)
+		values(#{gdsState}, #{cateCode}, #{gdsDes}, #{gdsWriter},
+		#{gdsPrice},
+		#{gdsPwd}, #{gdsImg}, #{gdsThumbImg});
+	</insert>
+
+	<!-- view post -->
+	<select id="view" parameterType="int"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsWriter, gdsDate, gdsPwd,
+		viewCnt,
+		gdsDes, gdsPrice, cateCode, gdsThumbImg
+		from
+		tbl_goods
+		where gdsNum =
+		#{gdsNum}
+	</select>
+
+    <!-- update post -->
+	<update id="updateView" parameterType="com.board.domain.GoodsVO">
+		update tbl_goods set
+		viewCnt = viewCnt + 1
+		where gdsNum = #{gdsNum}
+	</update>
+
+	<!-- modify post -->
+	<update id="modify" parameterType="com.board.domain.GoodsVO">
+		update tbl_goods
+		set
+		gdsState =
+		#{gdsState},
+		cateCode = #{cateCode},
+		gdsDes = #{gdsDes},
+		gdsImg =
+		#{gdsImg},
+		gdsThumbImg = #{gdsThumbImg},
+		gdsWriter = #{gdsWriter},
+		gdsPrice = #{gdsPrice},
+		gdsPwd = #{gdsPwd},
+		gdsDate = current_timestamp
+		where gdsNum = #{gdsNum}
+	</update>
+
+	<!-- delete post -->
+	<delete id="delete" parameterType="int">
+		delete
+		from tbl_goods
+		where
+		gdsNum
+		= #{gdsNum}
+	</delete>
+
+	<!-- number of all goods -->
+	<select id="count" resultType="int">
+		select count(gdsNum) from
+		tbl_goods
+	</select>
+
+	<!-- number of goods for category -->
+	<select id="countCate" resultType="int" parameterType="String">
+		select
+		count(gdsNum) from tbl_goods where cateCode=#{cateCode}
+	</select>
+
+	<!-- listing and paging -->
+	<select id="list" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState, cateCode,
+		gdsThumbImg,
+		gdsDate, viewCnt
+		from tbl_goods
+		order by field(gdsState,
+		'파매완료'), gdsDate desc
+		limit #{displayPost}, #{postNum}
+	</select>
+
+	<!-- listing and paging -->
+	<select id="listPage" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState,
+		gdsThumbImg,
+		gdsDate, viewCnt, cateCode
+		from tbl_goods
+		order by
+		field(gdsState, '판매완료'), gdsDate desc
+		limit #{displayPost}, #{postNum}
+	</select>
+
+	<!-- listing and paging for Toy category -->
+	<select id="listPageToy" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState,
+		gdsThumbImg,
+		gdsDate, viewCnt
+		from tbl_goods
+		where cateCode='Toy'
+		order by
+		field(gdsState,
+		'판매완료'), gdsDate desc
+		limit #{displayPost}, #{postNum}
+	</select>
+
+	<!-- listing and paging for Clothes category -->
+	<select id="listPageClothes" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState,
+		gdsThumbImg,
+		gdsDate, viewCnt
+		from tbl_goods
+		where cateCode='Clothes'
+		order by field(gdsState, '판매완료'), gdsDate desc
+		limit #{displayPost},
+		#{postNum}
+	</select>
+
+	<!-- listing and paging for Fruits category -->
+	<select id="listPageFruits" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState,
+		gdsThumbImg,
+		gdsDate, viewCnt
+		from tbl_goods
+		where cateCode='Fruits'
+		order by field(gdsState, '판매완료'), gdsDate desc
+		limit #{displayPost},
+		#{postNum}
+	</select>
+
+	<!-- listing and paging for Electronics category -->
+	<select id="listPageElectronics" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState,
+		gdsThumbImg,
+		gdsDate, viewCnt
+		from tbl_goods
+		where cateCode='Electronics'
+		order by field(gdsState, '판매완료'), gdsDate desc
+		limit #{displayPost},
+		#{postNum}
+	</select>
+
+	<!-- listing and paging Books category -->
+	<select id="listPageBooks" parameterType="hashMap"
+		resultType="com.board.domain.GoodsVO">
+		select
+		gdsNum, gdsImg, gdsDes, gdsPrice,
+		gdsWriter, gdsState,
+		gdsThumbImg,
+		gdsDate, viewCnt
+		from tbl_goods
+		where cateCode='Books'
+		order
+		by field(gdsState, '판매완료'), gdsDate desc
+		limit #{displayPost},
+		#{postNum}
+	</select>
+
+</mapper>

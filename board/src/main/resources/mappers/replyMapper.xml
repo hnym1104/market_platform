@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mappers.reply">
+	
+	<!-- reply list -->
+	<select id="replyList" parameterType="int"
+		resultType="com.board.domain.ReplyVO">
+		select
+		repNum, gdsNum, repWriter,
+		repPwd, repDate, repContent
+		from tbl_reply
+		where gdsNum = #{gdsNum}
+	</select>
+	
+	<!-- reply view -->
+	<select id="view" parameterType="int"
+		resultType="com.board.domain.ReplyVO">
+		select
+		repNum, gdsNum, repWriter,
+		repPwd, repDate, repContent
+		from tbl_reply
+		where repNum = #{repNum}
+	</select>
+
+	<!-- write reply -->
+	<insert id="replyWrite" parameterType="com.board.domain.ReplyVO">
+		insert into
+		tbl_reply(gdsNum, repWriter, repContent, repPwd, repDate)
+		value(#{gdsNum}, #{repWriter}, #{repContent}, #{repPwd},
+		current_timestamp)
+	</insert>
+
+	<!-- modify reply -->
+	<update id="replyModify"
+		parameterType="com.board.domain.ReplyVO">
+		update tbl_reply set
+		repWriter = #{repWriter},
+		repContent
+		= #{repContent},
+		repPwd = #{repPwd},
+		repDate = current_timestamp
+		where
+		repNum = #{repNum}
+		and gdSNum = #{gdsNum}
+	</update>
+
+	<!-- delete reply -->
+	<delete id="replyDelete"
+		parameterType="com.board.domain.ReplyVO">
+		delete from tbl_reply
+		where repNum = #{repNum}
+		and gdsNum
+		= ${gdsNum}
+	</delete>
+	
+	<!--  delete all reply for post -->
+	<delete id="deleteAllReply"
+		parameterType="com.board.domain.ReplyVO">
+		delete from tbl_reply
+		where gdsNum = #{gdsNum}
+	</delete>
+
+	<!-- count reply number for post -->
+	<select id="count" resultType="int" parameterType="int">
+		select
+		count(repNum) from tbl_reply where gdsNum=#{gdsNum}
+	</select>
+
+	<!-- select reply -->
+	<select id="replySelect" parameterType="int"
+		resultType="com.board.domain.ReplyVO">
+		select
+		repNum, gdsNum, repWriter,
+		repContent, repDate, repPwd
+		from
+		tbl_reply where repNum=#{repNum}
+	</select>
+	
+	<!-- modify reply -->
+	<update id="replyUpdate" parameterType="com.board.domain.ReplyVO">
+		update tbl_reply
+		set
+		repWriter = #{repWriter},
+		repPwd = #{repPwd},
+		repContent = #{repContent},
+		repDate = current_timestamp
+		where repNum = #{repNum} and gdsNum = #{gdsNum}
+	</update>
+
+</mapper>
